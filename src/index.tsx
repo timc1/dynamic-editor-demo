@@ -1,6 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './app'
+import Demo from './demo/index'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import { FocusProvider } from './demo/use-focus'
+
+ReactDOM.render(
+  <FocusProvider>
+    <Demo />
+  </FocusProvider>,
+  document.getElementById('root')
+)

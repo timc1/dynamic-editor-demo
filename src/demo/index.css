@@ -1,0 +1,13 @@
+div.container {
+  max-width: 500px;
+  margin: 100px auto;
+  padding: 20px;
+}
+
+h1.title {
+  font-weight: var(--font-weight-bold);
+}
+
+p.subtitle {
+  font-size: var(--font-small);
+}

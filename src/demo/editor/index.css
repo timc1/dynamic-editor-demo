@@ -1,0 +1,36 @@
+div.editor {
+  position: relative;
+  margin: 0 0 15px 0;
+  padding: 0 0 20px 35px;
+}
+
+div.editor::before,
+div.editor::after {
+  content: '';
+  position: absolute;
+}
+
+div.editor::before {
+  top: 20px;
+  left: 14px;
+  bottom: 0;
+  width: 5px;
+  background: var(--light-gray);
+  border-radius: 2px;
+}
+
+div.editor::after {
+  top: 0;
+  left: 9px;
+  height: 15px;
+  width: 15px;
+  background: var(--dark-gray);
+  border-radius: 50%;
+}
+
+button.cancel-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}

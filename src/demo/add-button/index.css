@@ -1,0 +1,34 @@
+button.add-button {
+  position: relative;
+  padding: 15px;
+  background: none;
+  border: 2px solid var(--gray);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 100ms ease-out, border-color 100ms ease-out;
+}
+
+button.add-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 18px;
+  width: 18px;
+  mask: url('../../assets/icons/plus.svg') round;
+  background: var(--gray);
+  transition: inherit;
+}
+
+button.add-button:focus {
+  border-color: var(--dark-gray);
+}
+
+button.add-button:focus::before {
+  background: var(--dark-gray);
+}
+
+button.add-button:disabled {
+  opacity: 0.3;
+}
