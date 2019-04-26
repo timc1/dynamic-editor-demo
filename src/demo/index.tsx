@@ -30,7 +30,6 @@ type AppState = {
   notes: NotesType[]
   isAddNewEditorShowing: boolean
   currentEditingIndex: number
-  togglerToSetFocusOn: HTMLElement | null
 }
 
 type AppActions = {
@@ -52,7 +51,6 @@ const initialState: AppState = {
   notes: [],
   isAddNewEditorShowing: false,
   currentEditingIndex: -1,
-  togglerToSetFocusOn: null,
 }
 
 const reducer = (state: AppState, action: AppActions) => {
