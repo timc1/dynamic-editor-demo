@@ -5,8 +5,6 @@ import { randomId } from '../utils'
 import AddButton from './add-button/index'
 import Editor from './editor/index'
 
-import useFocus from './use-focus'
-
 /**
  * A demo showing how we can combine useReducer and
  * compound components to create a simple notes app.
@@ -18,6 +16,9 @@ import useFocus from './use-focus'
 export const notesAppActions = {
   toggleAddNewEditor: 'TOGGLE_ADD_NEW_EDITOR',
   toggleEditor: 'TOGGLE_EDITOR',
+  addNewNote: 'ADD_NEW_NOTE',
+  updateNote: 'UPDATE_NOTE',
+  deleteNote: 'DELETE_NOTE',
 }
 
 export type NotesType = {
@@ -68,6 +69,47 @@ const reducer = (state: AppState, action: AppActions) => {
         isAddNewEditorShowing: false,
         currentEditingIndex: action.payload.editorId,
       }
+    case notesAppActions.addNewNote:
+      return {
+        ...state,
+        notes: [
+          ...state.notes,
+          Note({
+            note: action.payload.note,
+          }),
+        ],
+        currentEditingIndex: -1,
+        isAddNewEditorShowing: false,
+      }
+    case notesAppActions.updateNote: {
+      const notes = state.notes.map(note => {
+        if (note.id === action.payload.id) {
+          note = Note({
+            id: action.payload.id,
+            note: action.payload.note,
+          })
+        }
+        return note
+      })
+
+      return {
+        ...state,
+        notes,
+        currentEditingIndex: -1,
+        isAddNewEditorShowing: false,
+      }
+    }
+    case notesAppActions.deleteNote: {
+      const notes = state.notes.filter(note => note.id !== action.payload.id)
+
+      return {
+        ...state,
+        notes,
+        currentEditingIndex: -1,
+        isAddNewEditorShowing: false,
+      }
+    }
+
     default:
       throw new Error(`No case for type ${action.type} found.`)
   }
@@ -76,24 +118,9 @@ const reducer = (state: AppState, action: AppActions) => {
 export default function NotesApp() {
   const [state, dispatch] = React.useReducer(reducer, initialState)
 
-  // Allows us to control the flow of focus.
-  const { cacheFocusElement, toggleFocus } = useFocus()
-
-  console.log('state', state)
-
-  const initialRender = React.useRef(false)
   React.useEffect(() => {
-    // useUpdatedEffect - skips the initial rendered call.
-    if (!initialRender.current) {
-      initialRender.current = true
-      return
-    }
-
-    if (!state.isAddNewEditorShowing) {
-      // Set focus back to the cached element.
-      toggleFocus()
-    }
-  }, [state.isAddNewEditorShowing])
+    console.log('state', state)
+  })
 
   // Recursively map through each child; if the child has a displayName
   // of 'Editor', we'll add appropriate props to the component.
@@ -108,6 +135,7 @@ export default function NotesApp() {
         if (child.type.displayName === 'Editor') {
           child = React.cloneElement(child, {
             // @ts-ignore
+            index: indexOfComponent,
             isInEditingMode: indexOfComponent === state.currentEditingIndex,
             dispatch,
           })
@@ -142,18 +170,23 @@ export default function NotesApp() {
           React.Children.map()
         </p>
         <hr />
+        <ul className="editor-container">
+          {state.notes.map(note => (
+            <li key={note.id}>
+              <Editor note={note} />
+            </li>
+          ))}
+        </ul>
         {state.isAddNewEditorShowing && <Editor />}
         <AddButton
           disabled={state.isAddNewEditorShowing}
-          onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+          onClick={() => {
             dispatch({
               type: notesAppActions.toggleAddNewEditor,
               payload: {
                 editorId: state.notes.length,
               },
             })
-
-            cacheFocusElement(e.target)
           }}
         />
       </div>

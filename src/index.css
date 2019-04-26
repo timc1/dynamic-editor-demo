@@ -26,10 +26,12 @@
   --font-medium: 17px;
   --font-small: 15px;
 
-  --primary: #90a2ff;
+  --primary: #536fff;
+  --primary-dark: #3c59ef;
   --light-gray: #f2f2f2;
   --gray: #91a2b0;
   --dark-gray: #414770;
+  --red: #FF366F;
 
   --box-shadow: 0 1px 3px rgba(188, 193, 217, 0.22),
     0 4px 12px rgba(188, 193, 217, 0.25);
